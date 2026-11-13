@@ -1,0 +1,457 @@
+/* ---------- Fuentes (alojadas en el proyecto, licencia OFL) ---------- */
+@font-face {
+  font-family: 'Fell SC';
+  src: url('../assets/fuentes/fell-sc.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Fell';
+  font-style: italic;
+  src: url('../assets/fuentes/fell-italica.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Alegreya';
+  font-weight: 400 900;
+  src: url('../assets/fuentes/alegreya.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Alegreya';
+  font-style: italic;
+  font-weight: 400 900;
+  src: url('../assets/fuentes/alegreya-italica.woff2') format('woff2');
+  font-display: swap;
+}
+
+/* ---------- Paleta: verdes, cafés, dorados y negros ---------- */
+:root {
+  --noche: #0d1710;
+  --bosque: #1b2e20;
+  --musgo: #47664a;
+  --cuero: #4a3423;
+  --oro: #c9a24b;
+  --oro-claro: #ecd9a0;
+  --pergamino: #f0e8d2;
+  --tenue: #b9b295;
+  --oxido: #d08a57;
+
+  --titulos: 'Fell SC', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --citas: 'Fell', 'Iowan Old Style', Georgia, serif;
+  --lectura: 'Alegreya', Georgia, 'Times New Roman', serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: #000;
+  color: var(--pergamino);
+  font: 400 1.125rem/1.6 var(--lectura);
+}
+
+h1, h2, p, ol, ul, dl, dd, blockquote { margin: 0; }
+ol, ul { padding: 0; list-style: none; }
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+
+.solo-lectores {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+:focus-visible { outline: 2px solid var(--oro-claro); outline-offset: 3px; }
+h1:focus { outline: none; }
+
+/* ---------- Fondo de la escena ---------- */
+#fondo {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--noche);
+  transition: opacity .7s ease;
+}
+#fondo .capa {
+  position: absolute;
+  inset: 0;
+  background: center / cover no-repeat;
+  opacity: 0;
+  transition: opacity .9s ease;
+}
+#fondo .capa.visible { opacity: 1; }
+/* Velo para que el texto se lea sobre cualquier imagen. */
+#fondo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgb(0 0 0 / .35), rgb(0 0 0 / .1) 30%, rgb(0 0 0 / .6));
+}
+body.negra #fondo { opacity: 0; }
+
+/* ---------- Barra superior ---------- */
+.barra {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  min-height: 3.5rem;
+  padding: .5rem max(.75rem, env(safe-area-inset-right)) .5rem max(1rem, env(safe-area-inset-left));
+}
+#progreso {
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  font: 1rem var(--titulos);
+  letter-spacing: .04em;
+  color: var(--oro-claro);
+  text-shadow: 0 1px 6px #000;
+}
+#progreso[hidden] { display: none; }
+.marcas { display: flex; gap: .4rem; }
+.marcas i {
+  width: .7rem;
+  height: .8rem;
+  border: 2px solid rgb(236 217 160 / .45);
+  border-radius: 50%;
+}
+.marcas .hecho { background: var(--oro); border-color: var(--oro); }
+.marcas .actual { border-color: var(--oro-claro); box-shadow: 0 0 8px rgb(236 217 160 / .8); }
+
+#sonido {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid rgb(236 217 160 / .5);
+  border-radius: 50%;
+  background: rgb(13 23 16 / .7);
+  color: var(--oro-claro);
+}
+#sonido svg { width: 1.4rem; height: 1.4rem; }
+#sonido .tachado { display: none; }
+#sonido.apagado .ondas { display: none; }
+#sonido.apagado .tachado { display: inline; }
+#sonido.apagado { color: var(--tenue); }
+
+/* ---------- Pantalla ---------- */
+#pantalla {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: .5rem .75rem max(1rem, env(safe-area-inset-bottom));
+}
+#pantalla.entra { animation: entrar .35s ease both; }
+@keyframes entrar { from { opacity: 0; } }
+
+/* El folio: marco de doble filete, como la portada de un libro antiguo. */
+.folio {
+  width: 100%;
+  max-width: 41rem;
+  padding: 1.5rem 1.25rem 1.5rem;
+  background: rgb(13 23 16 / .93);
+  border: 1px solid var(--oro);
+  outline: 1px solid rgb(201 162 75 / .45);
+  outline-offset: -7px;
+  box-shadow: 0 18px 50px rgb(0 0 0 / .55);
+}
+.folio > * + * { margin-top: 1rem; }
+
+h1 {
+  font: 400 clamp(1.9rem, 6vw, 2.6rem)/1.12 var(--titulos);
+  letter-spacing: .02em;
+  color: var(--oro-claro);
+  text-wrap: balance;
+}
+h2 {
+  font: 400 1.3rem/1.2 var(--titulos);
+  letter-spacing: .03em;
+  color: var(--oro-claro);
+}
+p { text-wrap: pretty; }
+
+.antecedente, .elegiste {
+  font-style: italic;
+  color: var(--tenue);
+  padding-left: .85rem;
+  border-left: 2px solid var(--musgo);
+}
+.pregunta {
+  font: italic 1.45rem/1.3 var(--citas);
+  color: var(--oro-claro);
+}
+.nota { font-size: .95rem; color: var(--tenue); }
+
+/* ---------- Botones ---------- */
+.boton {
+  display: block;
+  width: 100%;
+  min-height: 3.25rem;
+  padding: .6rem 1.5rem;
+  border: 1px solid var(--oro);
+  border-radius: 2px;
+  background: var(--oro);
+  color: #17120a;
+  font: 400 1.2rem var(--titulos);
+  letter-spacing: .05em;
+  transition: background-color .15s, color .15s;
+}
+.folio > .boton, form > .boton { margin-top: 1.5rem; }
+@media (hover: hover) { .boton:hover { background: var(--oro-claro); } }
+.boton:disabled {
+  background: transparent;
+  border-color: rgb(185 178 149 / .4);
+  color: rgb(185 178 149 / .6);
+  cursor: not-allowed;
+}
+.boton.claro { background: transparent; color: var(--oro-claro); }
+@media (hover: hover) { .boton.claro:hover { background: rgb(236 217 160 / .12); } }
+
+/* ---------- Portada ---------- */
+.portada {
+  align-self: center;
+  width: 100%;
+  max-width: 44rem;
+  padding: 1rem .5rem 3rem;
+  text-align: center;
+  text-shadow: 0 2px 18px rgb(0 0 0 / .8);
+}
+.portada > * + * { margin-top: 1.25rem; }
+.sello {
+  width: 5.5rem;
+  margin: 0 auto;
+  color: var(--oro);
+  filter: drop-shadow(0 0 14px rgb(236 190 90 / .7));
+  animation: latir 4.5s ease-in-out infinite;
+}
+@keyframes latir {
+  50% { filter: drop-shadow(0 0 30px rgb(255 214 120 / .95)); }
+}
+.portada h1 {
+  font-size: clamp(2.7rem, 11vw, 5.4rem);
+  line-height: 1;
+  color: #fbf3da;
+}
+.subtitulo { font: italic clamp(1.25rem, 4vw, 1.6rem)/1.3 var(--citas); color: var(--oro-claro); }
+.portada .boton { width: auto; min-width: 14rem; margin: 2.25rem auto 0; text-shadow: none; }
+.credito { max-width: 34rem; margin: 2rem auto 0; font-size: .9rem; line-height: 1.45; color: #e2dcc6; }
+
+/* ---------- Instrucciones ---------- */
+.pasos { counter-reset: paso; }
+.pasos li {
+  counter-increment: paso;
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: .5rem;
+  padding: .55rem 0;
+  border-bottom: 1px solid rgb(201 162 75 / .22);
+}
+.pasos li::before {
+  content: counter(paso);
+  font: 1.35rem/1.25 var(--titulos);
+  color: var(--oro);
+}
+
+/* ---------- Personajes ---------- */
+.personajes { display: grid; gap: .75rem; }
+.personaje {
+  display: grid;
+  grid-template-columns: 4.25rem 1fr;
+  gap: .25rem 1rem;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  text-align: left;
+  background: var(--bosque);
+  border: 1px solid var(--oro);
+  border-radius: 2px;
+  transition: background-color .15s;
+}
+@media (hover: hover) { button.personaje:hover { background: #253f2c; } }
+.retrato {
+  grid-row: span 2;
+  display: grid;
+  place-items: center;
+  width: 4.25rem;
+  height: 4.25rem;
+  border: 1px solid var(--oro);
+  border-radius: 50%;
+  color: var(--oro);
+  overflow: hidden;
+}
+.retrato svg { width: 2.6rem; height: 2.6rem; }
+.retrato img { width: 100%; height: 100%; object-fit: cover; }
+.datos { display: grid; gap: .1rem; }
+.datos strong { font: 400 1.5rem/1.1 var(--titulos); color: var(--oro-claro); }
+.datos em { color: var(--tenue); }
+.datos span { margin-top: .35rem; font-size: 1rem; line-height: 1.45; }
+.llamada {
+  grid-column: 2;
+  margin-top: .5rem;
+  font: 1.05rem var(--titulos);
+  letter-spacing: .04em;
+  color: var(--oro);
+}
+
+/* ---------- Dilemas ---------- */
+.opciones { display: grid; gap: .6rem; }
+.opcion {
+  display: grid;
+  grid-template-columns: 2.6rem 1fr;
+  align-items: center;
+  gap: .9rem;
+  width: 100%;
+  min-height: 3.75rem;
+  padding: .6rem .9rem;
+  text-align: left;
+  line-height: 1.35;
+  background: var(--bosque);
+  border: 1px solid rgb(201 162 75 / .5);
+  border-radius: 2px;
+  transition: background-color .15s, border-color .15s;
+}
+@media (hover: hover) { .opcion:hover { background: #253f2c; border-color: var(--oro); } }
+/* La letra va dentro de un anillo; al elegir, el anillo se llena de oro. */
+.letra {
+  display: grid;
+  place-items: center;
+  width: 2.3rem;
+  height: 2.6rem;
+  border: 3px solid var(--oro);
+  border-radius: 50%;
+  font: 1.15rem var(--titulos);
+  color: var(--oro-claro);
+  transition: background-color .15s, color .15s, box-shadow .15s;
+}
+.opcion[aria-pressed='true'] { background: #2c4a33; border-color: var(--oro-claro); }
+.opcion[aria-pressed='true'] .letra {
+  background: var(--oro);
+  color: #17120a;
+  box-shadow: 0 0 14px rgb(236 190 90 / .7);
+}
+
+.recorrido {
+  padding: .9rem 1rem;
+  background: rgb(74 52 35 / .45);
+  border-left: 3px solid var(--oro);
+}
+.recorrido ol { margin-top: .5rem; display: grid; gap: .5rem; }
+.recorrido li { line-height: 1.4; }
+.recorrido li span {
+  display: block;
+  font: .95rem var(--titulos);
+  letter-spacing: .04em;
+  color: var(--oro);
+}
+
+/* ---------- Pantalla negra ---------- */
+.intertitulo {
+  align-self: center;
+  width: 100%;
+  max-width: 46rem;
+  padding: 1rem .75rem 3rem;
+  text-align: center;
+}
+.intertitulo blockquote {
+  font: italic clamp(1.75rem, 6.2vw, 3rem)/1.22 var(--citas);
+  color: #fbf3da;
+  text-wrap: balance;
+  animation: revelar 1.6s ease .25s both;
+}
+.intertitulo blockquote::before {
+  content: '';
+  display: block;
+  width: 3rem;
+  height: 1px;
+  margin: 0 auto 2rem;
+  background: var(--oro);
+}
+.intertitulo .boton {
+  width: auto;
+  min-width: 12rem;
+  margin: 3rem auto 0;
+  animation: revelar .8s ease 1.9s both;
+}
+@keyframes revelar { from { opacity: 0; } }
+
+/* ---------- Campos de texto ---------- */
+.campo { display: block; }
+.campo + .campo { margin-top: .9rem; }
+.campo > span { display: block; margin-bottom: .35rem; font-size: 1rem; color: var(--tenue); }
+.campo input, .campo textarea {
+  display: block;
+  width: 100%;
+  padding: .65rem .8rem;
+  background: rgb(0 0 0 / .35);
+  border: 1px solid rgb(201 162 75 / .55);
+  border-radius: 2px;
+  color: var(--pergamino);
+}
+.campo textarea { resize: vertical; min-height: 5.5rem; }
+.campo input:focus-visible, .campo textarea:focus-visible { outline-offset: 0; border-color: var(--oro-claro); }
+form > * + * { margin-top: .9rem; }
+
+/* ---------- Finales, balance y cierre ---------- */
+.aprendizaje { display: grid; gap: .75rem; }
+.aprendizaje div { padding: .8rem 1rem; background: rgb(74 52 35 / .45); border-left: 3px solid var(--oro); }
+.aprendizaje dt { font: 1rem var(--titulos); letter-spacing: .04em; color: var(--oro); }
+
+.balance { display: grid; gap: .25rem; }
+.balance li {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: .75rem;
+  padding: .75rem 0;
+  border-bottom: 1px solid rgb(201 162 75 / .22);
+}
+.balance strong { font: 400 1.15rem var(--titulos); letter-spacing: .03em; color: var(--oro-claro); }
+.marca svg { width: 1.9rem; height: 1.9rem; }
+.balance .logro .marca { color: var(--oro); }
+.balance .falta .marca { color: var(--oxido); }
+.balance .falta strong { color: var(--oxido); }
+.mi-nota { margin-top: .3rem; font-size: .98rem; font-style: italic; color: var(--tenue); overflow-wrap: anywhere; }
+
+.veredicto {
+  padding: 1.25rem 0;
+  border-block: 1px solid var(--oro);
+  text-align: center;
+}
+.veredicto > * + * { margin-top: .4rem; }
+.cuenta { font: 2.6rem/1 var(--titulos); color: var(--oro); }
+.veredicto h2 { font-size: 1.6rem; }
+
+.sin-js { margin: 2rem; padding: 1rem; background: var(--noche); border: 1px solid var(--oro); }
+
+/* ---------- Pantallas anchas ---------- */
+@media (min-width: 48rem) {
+  body { font-size: 1.2rem; }
+  #pantalla { align-items: center; padding: 1rem 2rem 3rem; }
+  .folio { padding: 2.5rem 2.75rem; }
+  .folio > * + * { margin-top: 1.15rem; }
+  .boton { width: auto; min-width: 15rem; }
+  .personaje { padding: 1.4rem; }
+}
+
+/* En pantallas grandes el texto va a un lado para dejar ver la escena. */
+@media (min-width: 70rem) {
+  #pantalla { justify-content: flex-start; padding-left: clamp(2rem, 6vw, 7rem); }
+  .folio { max-width: 36rem; }
+  body[data-vista='inicio'] #pantalla,
+  body[data-vista='frase'] #pantalla { justify-content: center; padding-left: 2rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

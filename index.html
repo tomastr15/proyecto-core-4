@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>El camino que eliges</title>
+  <meta name="description" content="Juego de decisiones inspirado en El Señor de los Anillos. Asume el papel de Frodo, elige y descubre qué dicen tus decisiones sobre una vida lograda.">
+  <meta name="theme-color" content="#0d1710">
+  <meta property="og:title" content="El camino que eliges">
+  <meta property="og:description" content="Cinco dilemas, tres finales y un balance de tus decisiones. Dura unos diez minutos.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_CO">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fuentes/fell-sc.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fuentes/alegreya.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/img/comarca.svg" as="image">
+  <link rel="stylesheet" href="css/estilos.css">
+  <script type="module" src="js/juego.js"></script>
+</head>
+<body data-vista="inicio">
+  <div id="fondo" aria-hidden="true">
+    <div class="capa"></div>
+    <div class="capa"></div>
+  </div>
+
+  <header class="barra">
+    <p id="progreso" hidden></p>
+    <button id="sonido" type="button" aria-pressed="true">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z" fill="currentColor"/>
+        <path class="ondas" d="M15.5 9a4.2 4.2 0 010 6M18 6.5a7.8 7.8 0 010 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        <path class="tachado" d="M15.5 9.5l5 5m0-5l-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <span class="solo-lectores">Sonido activado</span>
+    </button>
+  </header>
+
+  <main id="pantalla" aria-live="polite"></main>
+
+  <noscript>
+    <p class="sin-js">Este juego necesita JavaScript. Actívalo en tu navegador y recarga la página.</p>
+  </noscript>
+</body>
+</html>

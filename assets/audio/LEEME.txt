@@ -1,0 +1,11 @@
+Música de fondo (opcional)
+
+1. Guarda aquí un archivo de música ambiental, por ejemplo musica.mp3
+   (1 a 3 minutos, que se pueda repetir en bucle, menos de 2 MB).
+2. Abre js/recursos.js y cambia la línea
+       export const MUSICA = '';
+   por
+       export const MUSICA = 'assets/audio/musica.mp3';
+
+Si no pones ningún archivo, el juego genera su propio ambiente sonoro.
+Los efectos de decisión y de consecuencia no necesitan archivos.
